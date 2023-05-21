@@ -2,7 +2,6 @@ import pandas as pd
 import pickle
 import os
 from sklearn import metrics
-from sklearn.linear_model import LogisticRegression
 import json
 from loguru import logger
 
@@ -39,6 +38,8 @@ def score_model():
     logger.info("F1 score: {}".format(f1_score))
     with open(os.path.join(config['output_model_path'], "latestscore.txt"), 'w') as f:
         f.write(str(f1_score))
+
+    return f1_score
 
 
 if __name__ == '__main__':

@@ -90,7 +90,7 @@ def outdated_packages_list():
     with open('dependencies.json', 'w') as f:
         json.dump(df_modules.to_dict('records'), f)
 
-    return df_modules
+    return df_modules.to_json(orient="records")
 
 
 

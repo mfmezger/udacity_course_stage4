@@ -1,13 +1,10 @@
-import pickle
-from sklearn.model_selection import train_test_split
 import pandas as pd
-import numpy as np
 from sklearn import metrics
 import matplotlib.pyplot as plt
 import seaborn as sns
 import json
 import os
-from diagnostics import model_predictions, dataframe_summary, missing_values_percentage, execution_time
+from diagnostics import model_predictions
 
 
 ###############Load config.json and get path variables
@@ -34,17 +31,11 @@ def score_model():
 
     sns.heatmap(cm, annot=True, fmt=".3f", linewidths=.5, square = True, cmap = 'Blues_r');
 
-    plt.ylabel('Actual label');
-    plt.xlabel('Predicted label');
+    plt.ylabel('Actual label')
+    plt.xlabel('Predicted label')
 
     # save the confusion matrix plot to the workspace
     plt.savefig(cm_path)
-    
-
-
-
-
-
 
 
 if __name__ == '__main__':

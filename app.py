@@ -1,8 +1,10 @@
 from flask import Flask, session, jsonify, request
+import pandas as pd
 from diagnostics import model_predictions, dataframe_summary, missing_values_percentage, execution_time, outdated_packages_list
 from scoring import score_model
 import json
 import os
+from loguru import logger
 
 
 
@@ -15,14 +17,19 @@ with open('config.json','r') as f:
 
 dataset_csv_path = os.path.join(config['output_folder_path']) 
 
-prediction_model = None
 
 
 #######################Prediction Endpoint
 @app.route("/prediction", methods=['POST','OPTIONS'])
 def predict():        
-    test_data_file_path = request.form.get('path')
-    result = model_predictions(test_data_file_path[1:-1])
+    test_data_file_path = request.form.get('path')[1:-1]
+    # load the test data
+
+    logger.info("test_data_file_path: %s", test_data_file_path)
+    test_data = pd.read_csv(test_data_file_path)
+
+
+    result = model_predictions(test_data)
     return json.dumps([int(item) for item in result])
 
 #######################Scoring Endpoint
@@ -40,7 +47,7 @@ def summarystats():
 @app.route("/diagnostics", methods=['GET','OPTIONS'])
 def diagnostics():        
     # run timing, missing data, and dependency check
-    return json.dumps([execution_time(), missing_values_percentage(), outdated_packages_list()])
+    return json.dumps([execution_time(), missing_values_percentage().to_json(), outdated_packages_list()])
 
 if __name__ == "__main__":    
     app.run(host='0.0.0.0', port=8000, debug=True, threaded=True)

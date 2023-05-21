@@ -9,14 +9,17 @@ with open('config.json','r') as f:
     config = json.load(f) 
 
 
-test_data_path = os.path.join(config["test_data_path"], "testdata.csv")
 apireturns = os.path.join(config["output_model_path"], "apireturns.txt")
 
 #Call each API endpoint and store the responses
-response1 = requests.post(URL + 'prediction', data={'path': json.dumps(test_data_path)})
+response1 = requests.post(URL + 'prediction', data={'path': json.dumps(os.path.join(config["test_data_path"],"testdata.csv"))})
+logger.info(f"API response for prediction: {response1.json()}")
 response2 = requests.get(URL + 'scoring')
+logger.info(f"API response for scoring: {response2.json()}")
 response3 = requests.get(URL + 'summarystats')
+logger.info(f"API response for summarystats: {response3.json()}")
 response4 = requests.get(URL + 'diagnostics')
+logger.info(f"API response for diagnostics: {response4.json()}")
 
 #combine all API responses
 responses = {
