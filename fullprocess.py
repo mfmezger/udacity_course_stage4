@@ -29,8 +29,10 @@ import reporting
 ##################Re-deployment
 #if you found evidence for model drift, re-run the deployment.py script
 
+
 ##################Diagnostics and reporting
 #run diagnostics.py and reporting.py for the re-deployed model
+
 
 
 
