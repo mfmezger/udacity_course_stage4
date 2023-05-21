@@ -1,8 +1,6 @@
 import pandas as pd
-import numpy as np
 import os
 import json
-from datetime import datetime
 from pathlib import Path
 
 
@@ -14,12 +12,6 @@ with open('config.json','r') as f:
 input_folder_path = config['input_folder_path']
 output_folder_path = config['output_folder_path']
 
-
-# final_data_frame_name = config['final_data_name']
-# ingested_data_frame_names = config['ingested_files_name']
-
-# final_data_path = os.path.join(output_folder_path, final_data_frame_name)
-# ingested_files_path = os.path.join(output_folder_path, ingested_data_frame_names)
 
 #############Function for data ingestion
 def merge_multiple_dataframes() -> None:
@@ -41,11 +33,11 @@ def merge_multiple_dataframes() -> None:
     Path(output_folder_path).mkdir(parents=True, exist_ok=True) 
 
     final_data_frame = pd.concat(data_frame_list, axis=0, ignore_index=True).drop_duplicates()
-    final_data_frame.to_csv(final_data_path, index=False)
+    final_data_frame.to_csv(os.path.join(output_folder_path, "finaldata.csv"), index=False)
 
-    with open(ingested_files_path, 'w') as f:
+    with open(os.path.join(output_folder_path, "ingestedfiles.txt"), 'w') as f:
         f.writelines(file_list)
- 
+
 
 if __name__ == '__main__':
     merge_multiple_dataframes()
